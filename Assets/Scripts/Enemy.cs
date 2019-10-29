@@ -5,10 +5,11 @@ using UnityEngine.AI;
 public enum EnemyStates { Idle, FollowPlayer, AttackPlayer, Squished, Immobile}
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Rigidbody))]
 public class Enemy : MonoBehaviour
 {
     public EnemyStates enemyState;
-
+    private Rigidbody rigidbody;
     private NavMeshAgent agent;
     private int distanceToReact = 5;
     PlayerController playerController;
@@ -18,13 +19,17 @@ public class Enemy : MonoBehaviour
 
     public float randomTargetRadius = 3;
 
+    private float startingSpeed;
+
     Vector3 target;
 
     void Start()
     {
         playerController = FindObjectOfType<PlayerController>();
         agent = GetComponent<NavMeshAgent>();
+        rigidbody = GetComponent<Rigidbody>();
         target = transform.position;
+        startingSpeed = agent.speed;
     }
 
     void Update()
@@ -115,15 +120,25 @@ public class Enemy : MonoBehaviour
 
     public void OnSquished ()
     {
+        enemyState = EnemyStates.Squished;
         StartCoroutine("CoOnSquished");
+        transform.localScale = new Vector3(1, 0.1f, 1);
+        agent.speed = 0;
+        agent.enabled = false;
+        target = transform.position;
     }
 
     IEnumerator CoOnSquished ()
     {
-        enemyState = EnemyStates.Squished;
+        rigidbody.isKinematic = true;
         yield return new WaitForSeconds(timeToExpand);
         enemyState = EnemyStates.Immobile;
+        transform.localScale = new Vector3(1,0.5f,1);
         yield return new WaitForSeconds(timeToRemobilise);
         enemyState = EnemyStates.Idle;
+        agent.enabled = true;
+        agent.speed = startingSpeed;
+        rigidbody.isKinematic = false;
+
     }
 }
