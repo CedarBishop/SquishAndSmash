@@ -25,8 +25,12 @@ public class Enemy : MonoBehaviour
 
     Vector3 target;
 
+    bool canMove;
+
     void Start()
     {
+        canMove = true;
+        Dialogue.DialogueEvent += (bool answer) => canMove = !answer;
         randomOrigin = transform.position;
         playerController = FindObjectOfType<PlayerController>();
         agent = GetComponent<NavMeshAgent>();
@@ -35,31 +39,40 @@ public class Enemy : MonoBehaviour
         startingSpeed = agent.speed;
     }
 
+    private void OnDestroy()
+    {
+        Dialogue.DialogueEvent -= (bool answer) => canMove = !answer;
+    }
+
     void Update()
     {
-        switch (enemyState)
+        if (canMove == false)
         {
-            case EnemyStates.Idle:
-                IdleState();
-                break;
-            case EnemyStates.FollowPlayer:
-                FollowPlayerState();
-                break;
-            case EnemyStates.AttackPlayer:
-                AttackPlayerState();
-                break;
-            case EnemyStates.AttackCooldown:
-                AttackCooldownState();
-                break;
-            case EnemyStates.Squished:
-                SquishedState();
-                break;
-            case EnemyStates.Immobile:
-                ImmobileState();
-                break;
-            default:
-                break;
+            switch (enemyState)
+            {
+                case EnemyStates.Idle:
+                    IdleState();
+                    break;
+                case EnemyStates.FollowPlayer:
+                    FollowPlayerState();
+                    break;
+                case EnemyStates.AttackPlayer:
+                    AttackPlayerState();
+                    break;
+                case EnemyStates.AttackCooldown:
+                    AttackCooldownState();
+                    break;
+                case EnemyStates.Squished:
+                    SquishedState();
+                    break;
+                case EnemyStates.Immobile:
+                    ImmobileState();
+                    break;
+                default:
+                    break;
+            }
         }
+       
     }
 
     bool FindPlayer()
