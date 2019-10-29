@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     CharacterController controller;
     Vector2 inputDirection;
     float yVelocity;
-    Vector3 direction;
+    [HideInInspector] public Vector3 direction;
 
     public float jumpSpeed = 8.0f;
     public float gravity = 20.0f;
