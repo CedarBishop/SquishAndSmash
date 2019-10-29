@@ -40,7 +40,10 @@ public class Detector : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.R))
             {
                 isGrabbingEnemy = false;
-                triggeredEnemy.transform.parent = null;
+                if (triggeredEnemy != null)
+                {
+                    triggeredEnemy.transform.parent = null;
+                }
             }
         }
         else if (isTriggeringEnemy)
