@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public enum EnemyStates { Idle, FollowPlayer, AttackPlayer, Squished, Immobile}
+public enum EnemyStates { Idle, FollowPlayer, AttackPlayer, AttackCooldown, Squished, Immobile}
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Rigidbody))]
@@ -45,6 +45,9 @@ public class Enemy : MonoBehaviour
             case EnemyStates.AttackPlayer:
                 AttackPlayerState();
                 break;
+            case EnemyStates.AttackCooldown:
+                AttackCooldownState();
+                break;
             case EnemyStates.Squished:
                 SquishedState();
                 break;
@@ -83,6 +86,19 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    void AttackCooldownState ()
+    {
+        target = transform.position;
+        
+    }
+
+    IEnumerator CoAttackCooldown ()
+    {
+        agent.speed = 0;
+        yield return new WaitForSeconds(5);
+        enemyState = EnemyStates.Idle;
+    }
+
     void SetTarget ()
     {
         if (Vector3.Distance(transform.position, target) < 1 || agent.speed < 1 )
@@ -95,6 +111,10 @@ public class Enemy : MonoBehaviour
     {
         if (FindPlayer())
         {
+            if (GetDistanceToPlayer() < 1.5f)
+            {
+                enemyState = EnemyStates.AttackPlayer;
+            }
             agent.SetDestination(playerController.transform.position);
         }
         else
@@ -105,7 +125,22 @@ public class Enemy : MonoBehaviour
 
     void AttackPlayerState ()
     {
+        if (GetDistanceToPlayer() < 2)
+        {
+            Attack();
+        }
+        else
+        {
+            enemyState = EnemyStates.Idle;        
+        }
+    }
 
+    void Attack ()
+    {
+
+        // attack player
+
+        enemyState = EnemyStates.AttackCooldown;
     }
 
     void SquishedState ()
@@ -126,12 +161,14 @@ public class Enemy : MonoBehaviour
         agent.speed = 0;
         agent.enabled = false;
         target = transform.position;
+        transform.position -= new Vector3(0, 0.4f, 0);
     }
 
     IEnumerator CoOnSquished ()
     {
         rigidbody.isKinematic = true;
         yield return new WaitForSeconds(timeToExpand);
+        transform.position += new Vector3(0, 0.4f,0);
         enemyState = EnemyStates.Immobile;
         transform.localScale = new Vector3(1,0.5f,1);
         yield return new WaitForSeconds(timeToRemobilise);
