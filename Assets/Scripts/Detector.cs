@@ -8,6 +8,7 @@ public class Detector : MonoBehaviour
     SphereCollider sphereCollider;
     public Enemy triggeredEnemy;
     public bool isTriggeringEnemy;
+    bool isGrabbingEnemy;
     private void Start()
     {
         sphereCollider = GetComponent<SphereCollider>();
@@ -30,5 +31,41 @@ public class Detector : MonoBehaviour
             isTriggeringEnemy = false;
             triggeredEnemy = null;
         }
+    }
+
+    private void Update()
+    {
+        if (isGrabbingEnemy)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                isGrabbingEnemy = false;
+                triggeredEnemy.transform.parent = null;
+            }
+        }
+        else if (isTriggeringEnemy)
+        {
+            if (triggeredEnemy != null)
+            {
+                if (triggeredEnemy.enemyState == EnemyStates.Squished)
+                {
+                    if (Input.GetKeyDown(KeyCode.R))
+                    {
+                        if (isGrabbingEnemy == false)
+                        {
+                            isGrabbingEnemy = true;
+                            triggeredEnemy.transform.parent = transform;
+                        }
+                    }
+                }
+                else
+                {
+                    isGrabbingEnemy = false;
+                    triggeredEnemy.transform.parent = null;
+                }
+            }
+        }
+
+        
     }
 }

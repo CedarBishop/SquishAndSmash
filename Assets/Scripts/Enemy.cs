@@ -170,6 +170,7 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(timeToExpand);
         transform.position += new Vector3(0, 0.4f,0);
         enemyState = EnemyStates.Immobile;
+        transform.parent = null;
         transform.localScale = new Vector3(1,0.5f,1);
         yield return new WaitForSeconds(timeToRemobilise);
         enemyState = EnemyStates.Idle;
