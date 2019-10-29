@@ -27,4 +27,16 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void TransistionToHighscore ()
+    {
+        mainMenuParent.SetActive(false);
+        highscoreParent.SetActive(true);
+    }
+
+    public void TransistionToMainMenu ()
+    {
+        mainMenuParent.SetActive(true);
+        highscoreParent.SetActive(false);
+    }
 }
