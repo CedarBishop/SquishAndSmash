@@ -12,10 +12,19 @@ public class MainMenu : MonoBehaviour
 
     public string GameSceneName = "cedar";
 
+    public Text highscoreText;
+    string fastestTimeString = "N/A";
+
     private void Start()
     {
         mainMenuParent.SetActive(true);
         highscoreParent.SetActive(false);
+        if (PlayerPrefs.HasKey("FastestTime"))
+        {
+            float time = PlayerPrefs.GetFloat("FastestTime");
+            fastestTimeString = time.ToString("F2");
+        }
+        highscoreText.text = "Fastest Time = " + fastestTimeString;
     }
 
     public void PlayGame()

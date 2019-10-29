@@ -5,8 +5,10 @@ using UnityEngine;
 [RequireComponent(typeof(SphereCollider))]
 public class Collectable : MonoBehaviour
 {
+    public static event System.Action<float> LowerTime;
     SphereCollider collider;
     public float timeToReduce;
+
     void Start()
     {
         collider = GetComponent<SphereCollider>();
@@ -17,7 +19,11 @@ public class Collectable : MonoBehaviour
     {
         if (other.GetComponent<PlayerController>())
         {
-
+            if (LowerTime != null)
+            {
+                LowerTime(timeToReduce);
+                Destroy(gameObject);
+            }
         }
     }
 }
