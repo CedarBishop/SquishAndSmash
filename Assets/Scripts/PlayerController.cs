@@ -5,15 +5,15 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 5;
+    public float speed = 7;
 
     CharacterController controller;
     Vector2 inputDirection;
     float yVelocity;
     [HideInInspector] public Vector3 direction;
 
-    public float jumpSpeed = 8.0f;
-    public float gravity = 20.0f;
+    public float jumpSpeed = 12;
+    public float gravity = 1.5f;
 
     void Start()
     {
