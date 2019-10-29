@@ -7,20 +7,27 @@ public class ScoreSystem : MonoBehaviour
 {
     public Text timerText;
     float timer;
+    bool dialogueIsActive;
     void Start()
     {
-        Collectable.LowerTime += (float time) => timer -= time; 
+        Collectable.LowerTime += (float time) => timer -= time;
+        Dialogue.DialogueEvent += (bool isActive) => dialogueIsActive = isActive;
     }
 
     private void OnDestroy()
     {
         Collectable.LowerTime -= (float time) => timer -= time;
+        Dialogue.DialogueEvent -= (bool isActive) => dialogueIsActive = isActive;
     }
 
     void Update()
     {
-        timer += Time.deltaTime;
-        timerText.text = timer.ToString("F1");
+        if (dialogueIsActive == false)
+        {
+            timer += Time.deltaTime;
+            timerText.text = timer.ToString("F1");
+        }
+        
         if (Input.GetKeyDown(KeyCode.Equals))
         {
             OnWin();

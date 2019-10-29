@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
+    public static event System.Action<bool> pauseEvent;
     public GameObject pauseMenuParent;
     bool isPaused;
     public string mainMenuName = "MainMenu";
@@ -34,6 +35,10 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1;
         isPaused = false;
         pauseMenuParent.SetActive(false);
+        if (pauseEvent != null)
+        {
+            pauseEvent(isPaused);
+        }
      }
 
     void Pause ()
@@ -41,6 +46,10 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0;
         isPaused = true;
         pauseMenuParent.SetActive(true);
+        if (pauseEvent != null)
+        {
+            pauseEvent(isPaused);
+        }
     }
 
     public void TransitionToMainMenu ()
