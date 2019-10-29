@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
             if (controller.isGrounded)
             {
                 yVelocity = jumpSpeed;
+                AudioManager.instance.Play("Jump");
             }
 
         }
@@ -60,6 +61,12 @@ public class PlayerController : MonoBehaviour
     void Jump ()
     {
         controller.Move(new Vector3(0, yVelocity, 0) * Time.fixedDeltaTime);
+    }
+
+    public void PlayerHit ()
+    {
+
+        AudioManager.instance.Play("PlayerHit");
     }
 
 }

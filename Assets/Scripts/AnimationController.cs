@@ -25,6 +25,7 @@ public class AnimationController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             Attack();
+            AudioManager.instance.Play("Swing");
         }
     }
 
@@ -32,7 +33,10 @@ public class AnimationController : MonoBehaviour
     {
         if (detector.isTriggeringEnemy)
         {
-            detector.triggeredEnemy.OnSquished();
+            if (detector.triggeredEnemy.enemyState != EnemyStates.Squished)
+            {
+                detector.triggeredEnemy.OnSquished();                
+            }
         }
     }
 }
