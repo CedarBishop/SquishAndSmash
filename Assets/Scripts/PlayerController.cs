@@ -8,7 +8,8 @@ public class PlayerController : MonoBehaviour
     public float speed = 5;
 
     CharacterController controller;
-    Vector3 inputDirection;
+    Vector2 inputDirection;
+    float yVelocity;
     Vector3 direction;
 
     public float jumpSpeed = 8.0f;
@@ -32,8 +33,23 @@ public class PlayerController : MonoBehaviour
 
     void GetInput()
     {
-        inputDirection = new Vector3(Input.GetAxisRaw("Horizontal"),controller.velocity.y, Input.GetAxisRaw("Vertical"));
-        direction = inputDirection.normalized;
+        inputDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        inputDirection = inputDirection.normalized;
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (controller.isGrounded)
+            {
+                yVelocity = jumpSpeed;
+            }
+
+        }
+        else if (controller.isGrounded == false)
+        {
+            yVelocity -= gravity;
+        }
+
+
+        direction = new Vector3(inputDirection.x, 0,inputDirection.y);
     }
 
     void Move()
@@ -41,13 +57,9 @@ public class PlayerController : MonoBehaviour
         controller.Move(direction * speed * Time.fixedDeltaTime);
     }
 
-    void Jump()
+    void Jump ()
     {
-        if (controller.isGrounded && Input.GetButton("Jump"))
-        {
-            direction.y = jumpSpeed;
-        }
-        direction.y -= gravity * Time.fixedDeltaTime;
-        controller.Move(direction * Time.fixedDeltaTime);
+        controller.Move(new Vector3(0, yVelocity, 0) * Time.fixedDeltaTime);
     }
+
 }
