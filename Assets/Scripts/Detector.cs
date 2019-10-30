@@ -37,7 +37,7 @@ public class Detector : MonoBehaviour
     {
         if (isGrabbingEnemy)
         {
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.P))
             {
                 isGrabbingEnemy = false;
                 if (triggeredEnemy != null)
@@ -52,7 +52,7 @@ public class Detector : MonoBehaviour
             {
                 if (triggeredEnemy.enemyState == EnemyStates.Squished)
                 {
-                    if (Input.GetKeyDown(KeyCode.R))
+                    if (Input.GetKeyDown(KeyCode.P))
                     {
                         if (isGrabbingEnemy == false)
                         {

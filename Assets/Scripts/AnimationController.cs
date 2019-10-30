@@ -43,7 +43,7 @@ public class AnimationController : MonoBehaviour
                 }
                 transform.rotation = Quaternion.LookRotation(lookDirection);
 
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetKeyDown(KeyCode.O))
                 {
                     animator.SetTrigger("Swing");
                     AudioManager.instance.Play("Swing");

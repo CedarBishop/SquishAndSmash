@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Dialogue : MonoBehaviour
 {
     public static event System.Action<bool> DialogueEvent;
+    public static event System.Action EndGame;
     private Text text;
     private Image image;
     private Button button;
@@ -88,6 +90,11 @@ public class Dialogue : MonoBehaviour
         if (isEndingDialogue)
         {
             //end game here
+            if (EndGame != null)
+            {
+                EndGame();
+            }
+            SceneManager.LoadScene("MainMenu");
         }
         ClearText();
         ChildrenStatus(false);
