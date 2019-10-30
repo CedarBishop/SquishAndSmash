@@ -5,9 +5,13 @@ using UnityEngine;
 public class ResetVolume : MonoBehaviour
 {
     public GameObject reset;
-    private void OnTriggerExit(Collider other)
+    public GameObject player;
+    void Update()
     {
-        other.transform.position = reset.transform.position;
-        other.transform.rotation = reset.transform.rotation;
+        if (player.transform.position.y <= 1)
+        {
+            player.transform.position = reset.transform.position;
+            player.transform.rotation = reset.transform.rotation;
+        }
     }
 }
