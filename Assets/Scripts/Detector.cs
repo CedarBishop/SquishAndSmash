@@ -8,6 +8,8 @@ public class Detector : MonoBehaviour
     SphereCollider sphereCollider;
     public Enemy triggeredEnemy;
     public bool isTriggeringEnemy;
+    public bool isTriggeringHammer;
+    public Hammer triggeredHammer;
     bool isGrabbingEnemy;
     private void Start()
     {
@@ -22,6 +24,11 @@ public class Detector : MonoBehaviour
             isTriggeringEnemy = true;
             triggeredEnemy = collision.GetComponent<Enemy>();
         }
+        if (collision.gameObject.GetComponent<Hammer>())
+        {
+            isTriggeringHammer = true;
+            triggeredHammer = GetComponent<Hammer>();
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -30,6 +37,11 @@ public class Detector : MonoBehaviour
         {
             isTriggeringEnemy = false;
             triggeredEnemy = null;
+        }
+        if (other.gameObject.GetComponent<Hammer>())
+        {
+            isTriggeringHammer = true;
+            triggeredHammer = null;
         }
     }
 
@@ -69,6 +81,7 @@ public class Detector : MonoBehaviour
             }
         }
 
+        
         
     }
 }
