@@ -61,10 +61,10 @@ public class AnimationController : MonoBehaviour
                 detector.triggeredEnemy.OnSquished();                
             }
         }
-        if (detector.isTriggeringHammer)
-        {
-            detector.triggeredHammer.PlaySmashAnim();
-        }
+        //if (detector.isTriggeringHammer)
+        //{
+        //    detector.triggeredHammer.PlaySmashAnim();
+        //}
     }
 
     public void StartOnHitAnim ()

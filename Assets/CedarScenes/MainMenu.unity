@@ -551,5 +551,10 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3107586765359187236, guid: 473e1576c0fdcd9409076a4e07d178f3,
+        type: 3}
+      propertyPath: GameSceneName
+      value: Terrain
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 473e1576c0fdcd9409076a4e07d178f3, type: 3}

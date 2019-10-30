@@ -14,13 +14,26 @@ public class Hammer : MonoBehaviour
     public void PlaySmashAnim ()
     {
         animator.SetTrigger("HammerFall");
+        print("played anim");
+        StartCoroutine("Impact");
     }
 
-    public void Impact ()
+    public IEnumerator Impact ()
     {
+        yield return new WaitForSeconds(1);
         if (HitBoss != null)
         {
             HitBoss();
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<PlayerController>())
+        {
+            print("trigged0");
+            PlaySmashAnim();
         }
     }
 }
