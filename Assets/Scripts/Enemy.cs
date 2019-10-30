@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     PlayerController playerController;
 
     float timeToExpand = 10;
-    float timeToRemobilise = 5;
+    float timeToRemobilise = 7;
 
     public float randomTargetRadius = 6;
 

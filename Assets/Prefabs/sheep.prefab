@@ -108,6 +108,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7479336940518700747}
   - component: {fileID: 7479336940526115087}
+  - component: {fileID: 2119937013}
+  - component: {fileID: 3490753842679832892}
   m_Layer: 0
   m_Name: sheep
   m_TagString: Untagged
@@ -124,7 +126,7 @@ Transform:
   m_GameObject: {fileID: 7479336940518861483}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 14.009297, y: 0, z: 6.739626}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 7479336940518700749}
   - {fileID: 7479336940518700745}
@@ -150,6 +152,31 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!135 &2119937013
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7479336940518861483}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3.9064262
+  m_Center: {x: -0.004010491, y: -0.8199678, z: -0.29872385}
+--- !u!114 &3490753842679832892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7479336940518861483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ea09c010744c6e43a7a7411ad420928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7479336940518861485
 GameObject:
   m_ObjectHideFlags: 0
