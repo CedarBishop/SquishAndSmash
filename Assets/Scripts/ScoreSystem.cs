@@ -12,12 +12,14 @@ public class ScoreSystem : MonoBehaviour
     {
         Collectable.LowerTime += (float time) => timer -= time;
         Dialogue.DialogueEvent += (bool isActive) => dialogueIsActive = isActive;
+        Dialogue.EndGame += OnWin;
     }
 
     private void OnDestroy()
     {
         Collectable.LowerTime -= (float time) => timer -= time;
         Dialogue.DialogueEvent -= (bool isActive) => dialogueIsActive = isActive;
+        Dialogue.EndGame -= OnWin;
     }
 
     void Update()
