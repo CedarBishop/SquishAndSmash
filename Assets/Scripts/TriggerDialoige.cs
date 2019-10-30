@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class TriggerDialoige : MonoBehaviour
 {
-
+    private bool played = false;
     private void OnTriggerEnter(Collider other)
     {
+      
         if (other.GetComponent<PlayerController>())
         {
-            GetComponent<Npc>().InteractNpc();
+            if (!played)
+            {
+                GetComponent<Npc>().InteractNpc();
+                played = true;
+            }
         }
     }
 }
