@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/CedarScenes/MainMenu.unity
     guid: 4a7d13912beebd84bb36927b0a762a6b
   - enabled: 1
-    path: Assets/CedarScenes/cedar.unity
-    guid: aa64a8035f729cd43a7d5a6519eca1d5
+    path: Assets/IvanScenes/Terrain.unity
+    guid: dd26271b8774bd749900f40aa6a7a24e
   m_configObjects: {}

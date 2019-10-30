@@ -17,12 +17,19 @@ public class PlayerController : MonoBehaviour
     public float gravity = 1.5f;
 
     bool canMove;
+    bool isTalking;
 
     void Start()
     {
+        Dialogue.DialogueEvent += (bool answer) => isTalking = answer; 
         controller = GetComponent<CharacterController>();
         animationController = GetComponentInChildren<AnimationController>();
         canMove = true;
+    }
+
+    private void OnDestroy()
+    {
+        Dialogue.DialogueEvent -= (bool answer) => isTalking = answer;
     }
 
     void Update()
@@ -35,8 +42,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
-        Jump();
+        if (isTalking == false)
+        {
+            Move();
+            Jump();
+        }
     }
 
     void GetInput()
@@ -83,5 +93,6 @@ public class PlayerController : MonoBehaviour
     {
         canMove = true;
     }
+    
 
 }
