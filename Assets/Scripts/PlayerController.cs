@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 7;
 
+    AnimationController animationController;
     CharacterController controller;
     Vector2 inputDirection;
     float yVelocity;
@@ -15,14 +16,21 @@ public class PlayerController : MonoBehaviour
     public float jumpSpeed = 12;
     public float gravity = 1.5f;
 
+    bool canMove;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        animationController = GetComponentInChildren<AnimationController>();
+        canMove = true;
     }
 
     void Update()
     {
-        GetInput();
+        if (canMove)
+        {
+            GetInput();
+        }
     }
 
     private void FixedUpdate()
@@ -65,8 +73,15 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerHit ()
     {
-
         AudioManager.instance.Play("PlayerHit");
+        canMove = false;
+        controller.Move((animationController.lookDirection * -1));
+        animationController.StartOnHitAnim();
+    }
+
+    public void CanMoveAgain ()
+    {
+        canMove = true;
     }
 
 }

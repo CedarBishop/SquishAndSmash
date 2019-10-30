@@ -25,12 +25,9 @@ public class Enemy : MonoBehaviour
 
     Vector3 target;
 
-    bool canMove;
-
     void Start()
     {
-        canMove = true;
-        Dialogue.DialogueEvent += (bool answer) => canMove = !answer;
+        Dialogue.DialogueEvent += (bool answer) => agent.enabled = !answer;
         randomOrigin = transform.position;
         playerController = FindObjectOfType<PlayerController>();
         agent = GetComponent<NavMeshAgent>();
@@ -41,37 +38,37 @@ public class Enemy : MonoBehaviour
 
     private void OnDestroy()
     {
-        Dialogue.DialogueEvent -= (bool answer) => canMove = !answer;
+        Dialogue.DialogueEvent -= (bool answer) => agent.enabled = !answer;
     }
 
     void Update()
     {
-        if (canMove == false)
+
+        
+        switch (enemyState)
         {
-            switch (enemyState)
-            {
-                case EnemyStates.Idle:
-                    IdleState();
-                    break;
-                case EnemyStates.FollowPlayer:
-                    FollowPlayerState();
-                    break;
-                case EnemyStates.AttackPlayer:
-                    AttackPlayerState();
-                    break;
-                case EnemyStates.AttackCooldown:
-                    AttackCooldownState();
-                    break;
-                case EnemyStates.Squished:
-                    SquishedState();
-                    break;
-                case EnemyStates.Immobile:
-                    ImmobileState();
-                    break;
-                default:
-                    break;
-            }
+            case EnemyStates.Idle:
+                IdleState();
+                break;
+            case EnemyStates.FollowPlayer:
+                FollowPlayerState();
+                break;
+            case EnemyStates.AttackPlayer:
+                AttackPlayerState();
+                break;
+            case EnemyStates.AttackCooldown:
+                AttackCooldownState();
+                break;
+            case EnemyStates.Squished:
+                SquishedState();
+                break;
+            case EnemyStates.Immobile:
+                ImmobileState();
+                break;
+            default:
+                break;
         }
+        
        
     }
 
@@ -98,7 +95,11 @@ public class Enemy : MonoBehaviour
         else
         {
             SetTarget();
-            agent.SetDestination(target);
+            if (agent.enabled)
+            {
+
+                agent.SetDestination(target);
+            }
         }
     }
 
@@ -110,9 +111,12 @@ public class Enemy : MonoBehaviour
 
     IEnumerator CoAttackCooldown ()
     {
-        agent.speed = 0;
+        if (agent.enabled)
+            agent.speed = 0;
         yield return new WaitForSeconds(5);
         enemyState = EnemyStates.Idle;
+        if (agent.enabled)
+            agent.speed = startingSpeed;
     }
 
     void SetTarget ()
@@ -131,7 +135,8 @@ public class Enemy : MonoBehaviour
             {
                 enemyState = EnemyStates.AttackPlayer;
             }
-            agent.SetDestination(playerController.transform.position);
+            if (agent.enabled)
+                agent.SetDestination(playerController.transform.position);
         }
         else
         {
@@ -143,7 +148,7 @@ public class Enemy : MonoBehaviour
     {
         if (GetDistanceToPlayer() < 2)
         {
-            Attack();
+            agent.SetDestination(playerController.transform.position);
         }
         else
         {
@@ -151,17 +156,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Attack ()
-    {
-
-        // attack player
-
-        enemyState = EnemyStates.AttackCooldown;
-    }
 
     void HitPlayerEvent()
     {
         playerController.PlayerHit();
+        enemyState = EnemyStates.AttackCooldown;
+        StartCoroutine("CoAttackCooldown");
     }
 
     void SquishedState ()
@@ -203,5 +203,17 @@ public class Enemy : MonoBehaviour
         agent.speed = startingSpeed;
         rigidbody.isKinematic = false;
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<PlayerController>())
+        {
+            if (enemyState == EnemyStates.AttackPlayer || enemyState == EnemyStates.FollowPlayer)
+            {
+                print("sfgdseghdh");
+                HitPlayerEvent();
+            }
+        }
     }
 }
