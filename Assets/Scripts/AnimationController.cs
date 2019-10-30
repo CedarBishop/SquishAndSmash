@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class AnimationController : MonoBehaviour
 {
     PlayerController playerController;
     Detector detector;
-    Vector3 lookDirection = new Vector3(0,0,1);
+    Animator animator;
+    
+    public Vector3 lookDirection = new Vector3(0,0,1);
 
     bool canAnimate;
     bool isPaused;
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         Dialogue.DialogueEvent += (bool answer) => canAnimate = !answer;
         PauseMenu.pauseEvent += (bool answer) => isPaused = answer;
         canAnimate = true;
@@ -32,6 +36,7 @@ public class AnimationController : MonoBehaviour
         {
             if (canAnimate)
             {
+                animator.SetFloat("Speed", Mathf.Abs(playerController.direction.magnitude));
                 if (playerController.direction != Vector3.zero)
                 {
                     lookDirection = playerController.direction;
@@ -40,14 +45,14 @@ public class AnimationController : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    Attack();
+                    animator.SetTrigger("Swing");
                     AudioManager.instance.Play("Swing");
                 }
             }
         }       
     }
 
-    void Attack ()
+    public void Impact ()
     {
         if (detector.isTriggeringEnemy)
         {
@@ -56,5 +61,15 @@ public class AnimationController : MonoBehaviour
                 detector.triggeredEnemy.OnSquished();                
             }
         }
+    }
+
+    public void StartOnHitAnim ()
+    {
+        animator.SetTrigger("OnHit");
+    }
+
+    public void EndOnHitAnim()
+    {
+        playerController.CanMoveAgain();
     }
 }
